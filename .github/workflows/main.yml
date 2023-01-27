@@ -1,0 +1,38 @@
+name: AsyncAPI Documentation Generation
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+    # "standard step" where repo needs to be checked-out first
+    - name: Checkout repo
+      uses: actions/checkout@v3
+      
+    # Using another action for AsyncAPI for validation
+    - name: Validating AsyncAPI document
+      uses: WaleedAshraf/asyncapi-github-action@v0.0.9
+      with:
+        filepath: asyncapi.yaml
+      
+    # In case you do not want to use defaults, you for example want to use different template
+    - name: Generating HTML from my AsyncAPI document
+      uses: docker://asyncapi/github-action-for-generator:2.1.1
+      with:
+        template: '@asyncapi/html-template@0.23.0'  #In case of template from npm, because of @ it must be in quotes
+        filepath: asyncapi.yaml
+        parameters: baseHref=/tt-metrics-service/ #space separated list of key/values
+        output: generated-html
+      
+    #Using another action that takes generated HTML and pushes it to GH Pages
+    - name: Deploy GH page
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        # ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        folder: generated-html
