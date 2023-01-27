@@ -1,0 +1,24 @@
+asyncapi: '2.4.0'
+info:
+  title: Metrics Service
+  version: '0.1.0'
+  description: Service for collecting metrics from other services and storing them for later reporting
+servers:
+  demo:
+    protocol: kafka
+    url: localhost:9092
+channels:
+  metricsEventTriggered:
+    description: Channel used for publishing event metrics
+    subscribe:
+      bindings:
+        kafka:
+          groupId: metrics-group
+      operationId: recordMetric
+      message:
+        name: metricsEventMessage
+        title: Metrics Event Message
+        description: An event containing metrics to be recorded
+        schemaFormat:  'application/vnd.apache.avro;version=1.9.0'
+        payload:
+          $ref: 'https://raw.githubusercontent.com/XerxesDGreat/tt-shared-schemas/main/messages/eventMetric.avsc'
