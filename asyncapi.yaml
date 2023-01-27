@@ -3,10 +3,10 @@ info:
   title: Metrics Service
   version: '0.1.0'
   description: Service for collecting metrics from other services and storing them for later reporting
-# servers:
-#   demo:
-#     protocol: kafka
-#     url: localhost:9092
+servers:
+  demo:
+    protocol: kafka
+    url: localhost:9092
 channels:
   metricsEventTriggered:
     description: Channel used for publishing event metrics

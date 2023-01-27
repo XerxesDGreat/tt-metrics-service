@@ -1,2 +1,2 @@
 all:
-	ag asyncapi.yaml @asyncapi/python-paho-template -o output
+	ag asyncapi.yaml @asyncapi/java-template -o output -p server=demo
